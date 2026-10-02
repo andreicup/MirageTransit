@@ -1,0 +1,12 @@
+{
+  "profile_id": "synthetic-fleet-v1",
+  "vehicle_ids": ["MT-001", "MT-002", "MT-003"],
+  "initial_fuel_ml": 40000,
+  "route": [
+    {"offset_mm": 0, "latitude_e7": 440000000, "longitude_e7": 260000000, "heading_mdeg": 90000},
+    {"offset_mm": 1000000, "latitude_e7": 440000000, "longitude_e7": 260125000, "heading_mdeg": 0},
+    {"offset_mm": 2000000, "latitude_e7": 440090000, "longitude_e7": 260125000, "heading_mdeg": 270000},
+    {"offset_mm": 3000000, "latitude_e7": 440090000, "longitude_e7": 260000000, "heading_mdeg": 180000},
+    {"offset_mm": 4000000, "latitude_e7": 440000000, "longitude_e7": 260000000, "heading_mdeg": 90000}
+  ]
+}
