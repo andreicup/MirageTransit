@@ -1,7 +1,7 @@
 # Implementation roadmap
 
 ## Workflow
-Planning baseline is S0. Execute sequentially; each stage ends with tested code, updated run instructions and a reviewable commit/PR. Runtime claims belong only to released stages. Use task branches once the initial repository baseline exists.
+S0 is complete. S1 is implemented; see [verification and limitations](SPRINT_1.md). S2 is next. Execute sequentially; each stage ends with tested code, updated run instructions and a reviewable commit/PR. Runtime claims belong only to released stages. Use task branches once the initial repository baseline exists.
 
 | Stage | Focus | Estimate | Depends on |
 | --- | --- | --- | --- |
@@ -65,4 +65,5 @@ S11: bench-only ESP32/CAN integration and optional OBiCAN import, validated sepa
 If runtime exceeds target, measure before adding services. If replay diverges, freeze new features and repair ordering/units. If isolation checks fail, keep localhost-only and block deployment. If cross-surface behavior is contradictory, prioritize projection/version handling over visual polish.
 
 ## First implementation task
-S1 issue: implement deterministic fleet core and CLI. Deliver typed State/Command/Profile, synthetic route, step() transition, demo fixture, invariants, trace hashing, dependency lock and CI. No dashboard work before this proof exists.
+S1 completed: deterministic fleet core and CLI. Next implementation task is S2. Original S1 acceptance scope: Deliver typed State/Command/Profile, synthetic route, step() transition, demo fixture, invariants, trace hashing, dependency lock and CI. No dashboard work before this proof exists.
+
