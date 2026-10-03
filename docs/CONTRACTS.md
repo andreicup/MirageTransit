@@ -1,5 +1,8 @@
 # Contracts baseline
 
+S2 implemented the offline command/event and replay contracts. Exact current fields, ingress limits
+and differences from these planned network interfaces are documented in [Sprint 2](SPRINT_2.md).
+
 ## State
 State schema v1 has run_id, vehicle_id, tick, state_version, source_time_utc and:
 speed_mm_s, distance_mm, route_offset_mm, heading_mdeg, throttle_permille, brake_permille, ignition (bool), fuel_ml, fault_flags.
@@ -49,3 +52,4 @@ Portable memory bus and Linux vCAN must have the same semantic contract. Real ha
 ## Export
 A versioned JSON bundle includes manifest, initial state, ordered input intents, events, normalized expected state hashes and checksums. Keep raw captures separate from sanitized public fixtures.
 Import applies size/depth/event caps; no executable expressions, filesystem paths or external callback URLs. Invalid replay bundles fail before a run starts.
+
