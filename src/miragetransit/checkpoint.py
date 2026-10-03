@@ -5,20 +5,25 @@ import os
 import tempfile
 from dataclasses import asdict, fields
 from pathlib import Path
+from typing import Any
 
 from miragetransit.core import Fleet, canonical
 from miragetransit.models import Command, ScheduledCommand, State, integer
 from miragetransit.profile import object_fields, profile_from_dict, profile_to_dict
 
 
-def save(fleet: Fleet, path: Path) -> None:
-    payload = {
+def to_payload(fleet: Fleet) -> dict[str, Any]:
+    return {
         "checkpoint_version": 1,
         "profile": profile_to_dict(fleet.profile),
         "snapshot": fleet.snapshot(),
         "next_sequence": fleet._next_sequence,
         "queue": [asdict(item) for item in fleet.pending],
     }
+
+
+def save(fleet: Fleet, path: Path) -> None:
+    payload = to_payload(fleet)
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(prefix=".mt-", dir=path.parent)
     try:
@@ -35,8 +40,12 @@ def save(fleet: Fleet, path: Path) -> None:
 def load(path: Path) -> Fleet:
     if path.stat().st_size > 4_194_304:
         raise ValueError("checkpoint exceeds 4 MiB")
+    return from_payload(json.loads(path.read_text()))
+
+
+def from_payload(value: object) -> Fleet:
     data = object_fields(
-        json.loads(path.read_text()),
+        value,
         {"checkpoint_version", "profile", "snapshot", "next_sequence", "queue"},
         "checkpoint",
     )

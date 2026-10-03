@@ -2,15 +2,19 @@
 
 import argparse
 import json
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Any
 
 from miragetransit import __version__, checkpoint
 from miragetransit.core import Fleet
-from miragetransit.demo import demo
-from miragetransit.models import Command
+from miragetransit.demo import demo, schedule_normal_drive
+from miragetransit.intents import envelope
+from miragetransit.models import Command, integer
 from miragetransit.profile import load_profile
+from miragetransit.replay import export_bundle, import_bundle, load_bundle, verify
+from miragetransit.storage import StoragePaused, Store
 
 
 def parser() -> argparse.ArgumentParser:
@@ -35,10 +39,125 @@ def parser() -> argparse.ArgumentParser:
     fixture.add_argument("--seed", type=int, default=42)
     fixture.add_argument("--seconds", type=int, default=60)
     fixture.add_argument("--trace", type=Path)
+    for name in (
+        "run-start",
+        "run-command",
+        "run-step",
+        "run-inspect",
+        "run-events",
+        "run-stop",
+        "run-export",
+        "journal-demo",
+    ):
+        command = commands.add_parser(name)
+        command.add_argument("--db", type=Path, required=True)
+        command.add_argument("--run", required=True)
+        if name in ("run-start", "journal-demo"):
+            command.add_argument("--seed", type=int, default=42)
+        if name == "run-start":
+            command.add_argument("--profile", type=Path)
+        if name == "journal-demo":
+            command.add_argument("--seconds", type=int, default=60)
+        if name == "run-command":
+            command.add_argument("--input", type=Path)
+            command.add_argument("--command-id")
+            command.add_argument("--vehicle")
+            command.add_argument("--operation")
+            command.add_argument("--value")
+            command.add_argument("--at-tick", type=int)
+        if name == "run-step":
+            command.add_argument("--ticks", type=int, default=1)
+        if name == "run-events":
+            command.add_argument("--after", type=int, default=0)
+            command.add_argument("--limit", type=int, default=100)
+        if name == "run-export":
+            command.add_argument("--output", type=Path, required=True)
+    importer = commands.add_parser("run-import")
+    importer.add_argument("--db", type=Path, required=True)
+    importer.add_argument("--input", type=Path, required=True)
+    replay = commands.add_parser("replay")
+    replay.add_argument("--input", type=Path, required=True)
     return root
 
 
+def execute_journal(args: argparse.Namespace) -> dict[str, Any]:
+    if args.action in ("replay", "run-import"):
+        bundle = load_bundle(args.input)
+        result = verify(bundle)
+        if args.action == "replay":
+            return result
+        with Store(args.db) as store:
+            return import_bundle(store, bundle)
+    body: object = None
+    if args.action == "run-command":
+        supplied = any(
+            value is not None
+            for value in (args.command_id, args.vehicle, args.operation, args.value, args.at_tick)
+        )
+        if args.input is not None:
+            if supplied:
+                raise ValueError("--input cannot be combined with command fields")
+            with args.input.open("rb") as stream:
+                data = stream.read(4097)
+            if len(data) > 4096:
+                raise ValueError("intent exceeds 4096 bytes")
+            body = json.loads(data)
+            if isinstance(body, dict):
+                body["origin"] = {"adapter": "cli", "session_id": "local"}
+        else:
+            if any(
+                value is None
+                for value in (args.command_id, args.vehicle, args.operation, args.value)
+            ):
+                raise ValueError("command-id, vehicle, operation and value are required")
+            body = envelope(
+                args.run,
+                args.command_id,
+                args.vehicle,
+                args.operation,
+                json.loads(args.value),
+                args.at_tick,
+            )
+    if args.action == "journal-demo":
+        integer(args.seconds, "seconds", 1, 3600)
+    with Store(args.db) as store:
+        if args.action == "run-start":
+            return store.create(args.run, load_profile(args.profile), args.seed)
+        if args.action == "run-command":
+            return store.submit(args.run, body)
+        if args.action == "run-step":
+            return store.advance(args.run, args.ticks)
+        if args.action == "run-inspect":
+            return store.inspect(args.run)
+        if args.action == "run-events":
+            return {"run_id": args.run, "events": store.events(args.run, args.after, args.limit)}
+        if args.action == "run-stop":
+            return store.stop(args.run)
+        if args.action == "run-export":
+            return export_bundle(store, args.run, args.output)
+        if args.action == "journal-demo":
+            fixture = Fleet(load_profile(), args.seed)
+            schedule_normal_drive(fixture)
+            store.create(args.run, fixture.profile, fixture.seed)
+            for item in fixture.pending:
+                store.submit(
+                    args.run,
+                    envelope(
+                        args.run,
+                        f"demo-{item.sequence}",
+                        item.command.vehicle_id,
+                        item.command.operation,
+                        item.command.value,
+                        item.tick,
+                    ),
+                )
+            return store.advance(args.run, args.seconds * 10)
+    raise ValueError("unknown journal action")
+
+
 def execute(args: argparse.Namespace) -> dict[str, Any]:
+    if args.action.startswith("run-") or args.action in ("replay", "journal-demo"):
+        return execute_journal(args)
     if args.action == "demo":
         return demo(args.seed, args.seconds, args.trace)
     if args.action == "start":
@@ -71,8 +190,16 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         result = execute(args)
-    except (ValueError, TypeError, KeyError, OSError, RecursionError) as error:
+    except (
+        ValueError,
+        TypeError,
+        KeyError,
+        OSError,
+        RecursionError,
+        sqlite3.Error,
+        StoragePaused,
+    ) as error:
         print(f"error: {error}", file=sys.stderr)
         return 2
     print(json.dumps(result, sort_keys=True, indent=2))
-    return 0
+    return 2 if result.get("status") == "rejected" else 0

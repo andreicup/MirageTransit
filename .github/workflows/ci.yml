@@ -1,4 +1,4 @@
-name: Sprint 1 core
+name: MirageTransit core
 
 on:
   push:
@@ -28,6 +28,8 @@ jobs:
           uv run --locked ruff format --check .
       - name: Type check
         run: uv run --locked mypy src
+      - name: Check packaged lock fingerprint
+        run: uv run --locked python scripts/check_lock.py
       - name: Domain and CLI tests
         run: uv run --locked python -m unittest discover -s tests -v
       - name: Build distribution
