@@ -2,18 +2,22 @@
 
 # MirageTransit
 
-**0.1.0.dev2 · deterministic core and replay delivered**  
-Python · SQLite · uv · Typed contracts
+**0.1.0.dev6 · integrated transport deception lab**
 
-[Reviewer guide](docs/PORTFOLIO.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/SPRINT_2.md) · [CI](https://github.com/andreicup/MirageTransit/actions)
+Python · SQLite · HTTP/MQTT · Synthetic CAN · Verified replay
+
+[Reviewer guide](docs/PORTFOLIO.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/SPRINT_3_6.md) · [CI](https://github.com/andreicup/MirageTransit/actions)
 
 **Cyber-Physical Deception Platform for Transportation Systems**
 
 MirageTransit is a transport security research lab where a simulated fleet, decoy web portal, MQTT surface and virtual vehicle signals share one authoritative state. Suspicious interactions become observable simulation events and reproducible regression scenarios.
 
-**Status:** Sprints 1–2 implemented: deterministic fleet core, local CLI, SQLite events and verified scenario replay. HTTP/MQTT decoys, analyst console, CAN adapters and deployment are planned in later sprints. See [Sprint 1](docs/SPRINT_1.md) and [Sprint 2 results and limitations](docs/SPRINT_2.md).
+**Status:** deterministic core, durable SQLite/replay, coherent HTTP/MQTT lab services,
+portable CAN and the private analyst console are implemented. Local multi-process tests and
+packaged-wheel checks are available. Compose runtime and native vCAN validation remain release gates; no final release tag is claimed.
+See [S3–S6 results and limitations](docs/SPRINT_3_6.md), [acceptance results](benchmarks/acceptance.json) and [demo walkthrough](docs/DEMO.md).
 
-## Planned first release
+## First release
 
 A synthetic three-vehicle fleet; bounded vehicle dynamics; decoy HTTP and MQTT interfaces; correlated event timeline; canary breadcrumbs; deterministic scenario replay; private analyst console; local Docker deployment. Everything runs without purchasing hardware.
 
@@ -30,7 +34,23 @@ The engineering contribution is cross-protocol consistency and reproducible cybe
 
 Documentation is in English so reviewers can inspect the project directly. All sample organizations, vehicles and credentials must be synthetic. No license has been selected; public visibility does not itself grant an open-source license.
 
-## Quick start
+## Live lab
+
+```bash
+uv sync --locked
+uv run --locked miragetransit lab-init --directory runs/lab
+uv run --locked miragetransit lab --directory runs/lab
+```
+
+Portal: http://127.0.0.1:8761 · Analyst: http://127.0.0.1:8762 · MQTT: localhost:8763.
+Log in using the generated `password` field from `runs/lab/analyst.json`. Configs are private,
+excluded from git, and never overwritten silently. Ctrl+C stops all four service processes.
+Open the portal maintenance document and reuse its synthetic MQTT credential to see the
+cross-protocol evidence link. [Full instructions and Docker workflow](docs/SPRINT_3_6.md).
+
+![Private analyst console](docs/images/analyst-overview.png)
+
+## Offline quick start
 
 Requires Python 3.12 (validated on 3.12.14) and uv 0.12.19. No hardware or GPU needed.
 
@@ -111,5 +131,5 @@ uv run --locked python scripts/check_wheel.py
 
 Runtime uses only the standard library. The lockfile fixes development dependencies;
 the build backend and CI actions are pinned. Initial installation needs package access.
-No public honeypot exposure or real vehicle connection is part of this sprint.
+The running lab binds only to loopback. All vehicle data and credentials are synthetic.
 

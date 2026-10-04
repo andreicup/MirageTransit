@@ -1,7 +1,11 @@
 # Implementation roadmap
 
 ## Workflow
-S0 is complete. S1 is implemented; see [verification and limitations](SPRINT_1.md). S2 is implemented; see [durability/replay verification](SPRINT_2.md). S3 is next. Execute sequentially; each stage ends with tested code, updated run instructions and a reviewable commit/PR. Runtime claims belong only to released stages. Use task branches once the initial repository baseline exists.
+S0–S2 are complete. S3–S5 local implementations and S6 packaging/demo tooling are implemented;
+see [verification and remaining release gates](SPRINT_3_6.md). Docker runtime and native vCAN remain explicit verification/release gates. A three-minute
+captioned browser walkthrough has been recorded from the real ephemeral lab.
+No `v0.1.0` release is claimed yet. S7–S11 remain extensions. Each implementation ends with
+tested code, updated run instructions and a reviewable commit/PR.
 
 | Stage | Focus | Estimate | Depends on |
 | --- | --- | --- | --- |
@@ -64,7 +68,8 @@ S11: bench-only ESP32/CAN integration and optional OBiCAN import, validated sepa
 ## Stop/reduce criteria
 If runtime exceeds target, measure before adding services. If replay diverges, freeze new features and repair ordering/units. If isolation checks fail, keep localhost-only and block deployment. If cross-surface behavior is contradictory, prioritize projection/version handling over visual polish.
 
-## Next implementation task
-S3: decoy fleet portal and MQTT adapter using the SQLite coordinator, versioned projections,
-synthetic credentials and run-specific breadcrumbs. Enforce process/network separation and test
-negative reachability before exposing decoy services.
+## Next verification task
+Execute the local Compose deployment on a Docker-enabled Linux host, verify negative
+reachability from decoy to analyst, capture the portfolio video.
+Native vCAN verification remains a separate optional transport gate. The local four-process
+lab, portable CAN and offline replay work without those external runtime capabilities.

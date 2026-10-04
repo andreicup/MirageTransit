@@ -6,10 +6,10 @@ A transport security research lab built around one deterministic fleet state and
 
 ## Current delivery
 
-**0.1.0.dev2 · deterministic core and replay delivered**  
-**Stack:** Python · SQLite · uv · Typed contracts
+**0.1.0.dev6 · integrated transport deception lab**  
+**Stack:** Python · SQLite · HTTP/MQTT · Synthetic CAN · Verified replay
 
-The Sprint 2 report records 59 tests and 20 matching 600-tick replays. CI passes lint, strict typing, lock provenance, test execution, packaging and installed-wheel checks.
+Local acceptance records 79 tests, desktop/mobile browser checks and twenty equal replay checks. Ruff, strict typing, lock provenance, packaging and installed-wheel live startup checks pass. HTTP/MQTT/CAN projections share the core state; the private console correlates planted credential reuse.
 
 ## Inspect the engineering
 
@@ -30,6 +30,6 @@ Latest observed successful source [CI run](https://github.com/andreicup/MirageTr
 
 ## Remaining acceptance gates
 
-HTTP/MQTT decoys, analyst console, CAN adapters and contained deployment remain later milestones.
+HTTP/MQTT, portable CAN, analyst console and local deployment tooling are implemented. Docker runtime validation is tracked in CI; native vCAN and physical hardware remain separate gates. S7–S11 remain extensions. See [S3–S6](SPRINT_3_6.md) and [acceptance](../benchmarks/acceptance.json).
 
 See [the detailed verification record](../docs/SPRINT_2.md) for test methods and limits. A passed build or synthetic fixture does not close physical or model-quality gates.

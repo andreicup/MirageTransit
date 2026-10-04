@@ -127,7 +127,7 @@ class Store:
         fleet: Fleet,
         event_type: str,
         payload: object,
-    ) -> None:
+    ) -> dict[str, Any]:
         sequence = self.connection.execute(
             "SELECT COALESCE(MAX(sequence),0)+1 FROM events WHERE run_id=?", (run_id,)
         ).fetchone()[0]
@@ -150,6 +150,10 @@ class Store:
         if isinstance(payload, dict):
             body = payload.get("body", payload)
             if isinstance(body, dict):
+                origin = body.get("origin")
+                if isinstance(origin, dict):
+                    event["source_adapter"] = origin.get("adapter", "coordinator")
+                    event["session_id"] = origin.get("session_id")
                 for name in ("vehicle_id", "command_id"):
                     try:
                         event[name] = identifier(body.get(name), name)
@@ -158,6 +162,36 @@ class Store:
         self.connection.execute(
             "INSERT INTO events VALUES (?,?,?)", (run_id, sequence, encoded(event))
         )
+        return event
+
+    def observe(
+        self, run_id: str, event_type: str, adapter: str, session_id: str, payload: object
+    ) -> dict[str, Any]:
+        """Bounded adapter evidence; observations never change replay inputs or physics."""
+        identifier(adapter, "adapter")
+        identifier(session_id, "session_id")
+        if event_type not in ("session.opened", "artifact.read", "canary.used", "input.rejected"):
+            raise ValueError("unsupported observation")
+        if len(canonical(payload)) > 4096:
+            raise ValueError("observation exceeds 4096 bytes")
+        with self._write():
+            count = self.connection.execute(
+                "SELECT COUNT(*) FROM events WHERE run_id=? "
+                "AND json_extract(event,'$.source_adapter')!='coordinator' "
+                "AND json_extract(event,'$.event_type') IN "
+                "('session.opened','artifact.read','canary.used','input.rejected')",
+                (run_id,),
+            ).fetchone()[0]
+            if count >= 5000:
+                raise ValueError("run observation budget reached")
+            event = self._event(run_id, self._fleet(run_id), event_type, payload)
+            event["source_adapter"] = adapter
+            event["session_id"] = session_id
+            self.connection.execute(
+                "UPDATE events SET event=? WHERE run_id=? AND sequence=?",
+                (encoded(event), run_id, event["sequence"]),
+            )
+            return event
 
     def _action(self, run_id: str, action: object) -> None:
         sequence = self.connection.execute(
@@ -298,6 +332,21 @@ class Store:
             json.loads(row["event"])
             for row in self.connection.execute(
                 "SELECT event FROM events WHERE run_id=? AND sequence>? ORDER BY sequence LIMIT ?",
+                (run_id, after, limit),
+            )
+        ]
+
+    def evidence(self, run_id: str, after: int = 0, limit: int = 1000) -> list[dict[str, Any]]:
+        self._fleet(run_id)
+        integer(after, "after", 0, 2**63 - 1)
+        integer(limit, "limit", 1, 1000)
+        return [
+            json.loads(row["event"])
+            for row in self.connection.execute(
+                "SELECT event FROM events WHERE run_id=? AND sequence>? "
+                "AND json_extract(event,'$.event_type') IN "
+                "('session.opened','artifact.read','canary.used','input.rejected') "
+                "ORDER BY sequence LIMIT ?",
                 (run_id, after, limit),
             )
         ]

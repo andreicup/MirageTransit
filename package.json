@@ -1,0 +1,10 @@
+{
+  "name": "miragetransit-browser-checks",
+  "private": true,
+  "scripts": {
+    "test:browser": "uv run --locked python scripts/run_browser_check.py"
+  },
+  "devDependencies": {
+    "playwright": "1.55.1"
+  }
+}

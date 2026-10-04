@@ -22,7 +22,13 @@ Transport acknowledgments are distinct from command acceptance and state applica
 
 Live command placement: validate, assign run sequence, schedule at the next tick, persist acceptance and scheduled tick, then apply. Replay supplies recorded tick and sequence directly, bypassing live arrival times.
 
-## Implemented core and proposed adapter stack
+## Current implemented stack
+
+See [ADR 003](adr-003-lightweight-services.md) for the standard-library local service stack,
+MQTT subset and static analyst interface. The original stack proposal below is retained as
+planning context; it is not the current dependency list.
+
+## Initial stack proposal (proposals, not installed dependencies)
 | Area | Choice | Reason |
 | --- | --- | --- |
 | Simulation/contracts | Python 3.12, typed models, integer/fixed-point state | Fast iteration and deterministic core |
@@ -32,10 +38,10 @@ Live command placement: validate, assign run sequence, schedule at the next tick
 | CAN | Optional python-can SocketCAN/vCAN | Linux transport integration |
 | Console | React, TypeScript, Vite | Interactive inspection and timeline |
 | Core tests | unittest, Ruff and strict mypy | Implemented domain, CLI, storage and replay checks |
-| Future adapter/UI tests | Browser and protocol fixtures | Planned analyst/decoy integration evidence |
+| Adapter/UI tests | Browser and protocol fixtures | Implemented analyst/decoy integration evidence |
 | Packaging | Docker Compose | Reproducible homelab topology |
 
-The Python simulation, SQLite persistence and replay are implemented in Sprints 1–2 with no third-party runtime dependencies. Development/build tooling is pinned in `uv.lock`; CI verifies its fingerprint. FastAPI, MQTT, CAN, React and Docker in this table remain proposed later-sprint dependencies and are not installed by the current core. No C++ until profiling justifies it; no Kubernetes, Redis or external database for this scale.
+The original framework/broker proposal is superseded by ADR 003. The implemented Python simulation, SQLite, HTTP/MQTT services and replay have no third-party runtime dependencies. Development/build tooling is pinned in `uv.lock` and browser tooling in `package-lock.json`; the Compose image digest is pinned. No C++ until profiling justifies it; no Kubernetes, Redis or external database for this scale.
 
 ## Logical boundaries and process split
 Core: simulation, command policy, event writer, profile loader, replay engine.
