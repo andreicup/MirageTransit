@@ -5,7 +5,7 @@
 **0.1.0.dev2 · deterministic core and replay delivered**  
 Python · SQLite · uv · Typed contracts
 
-[Reviewer guide](docs/PORTFOLIO.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/SPRINT_2.md) · [CI](https://github.com/zCooperHD/MirageTransit/actions)
+[Reviewer guide](docs/PORTFOLIO.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/SPRINT_2.md) · [CI](https://github.com/andreicup/MirageTransit/actions)
 
 **Cyber-Physical Deception Platform for Transportation Systems**
 
@@ -35,7 +35,7 @@ Documentation is in English so reviewers can inspect the project directly. All s
 Requires Python 3.12 (validated on 3.12.14) and uv 0.12.19. No hardware or GPU needed.
 
 ```bash
-git clone https://github.com/zCooperHD/MirageTransit.git
+git clone https://github.com/andreicup/MirageTransit.git
 cd MirageTransit
 python -m pip install uv==0.12.19
 uv sync --locked

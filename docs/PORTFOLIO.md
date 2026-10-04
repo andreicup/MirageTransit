@@ -24,9 +24,9 @@ Start with the README quick start. Run the committed replay scenario, then captu
 
 ## Verification checkpoint
 
-Portfolio presentation audited on **5 October 2026 (Europe/Bucharest)** against source commit [`9b3b22c`](https://github.com/zCooperHD/MirageTransit/commit/9b3b22c65647dd9665d67cd79d58f7ae34cd0454).
+Portfolio presentation audited on **5 October 2026 (Europe/Bucharest)** against source commit [`9b3b22c`](https://github.com/andreicup/MirageTransit/commit/9b3b22c65647dd9665d67cd79d58f7ae34cd0454).
 
-Latest observed successful source [CI run](https://github.com/zCooperHD/MirageTransit/actions/runs/37128169776): `9b3b22c`. This is a dated checkpoint; the [Actions page](https://github.com/zCooperHD/MirageTransit/actions) is the authority for later changes.
+Latest observed successful source [CI run](https://github.com/andreicup/MirageTransit/actions/runs/37128169776): `9b3b22c`. This is a dated checkpoint; the [Actions page](https://github.com/andreicup/MirageTransit/actions) is the authority for later changes.
 
 ## Remaining acceptance gates
 
