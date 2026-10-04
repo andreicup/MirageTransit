@@ -17,7 +17,7 @@
     "reconnect_beyond_first_100_events": "passed"
   },
   "installed_wheel": "passed: golden trace, SQLite replay/import, live four-process startup and web resources",
-  "compose_runtime": "CI check added; local Docker runtime unavailable",
+  "compose_runtime": "passed in GitHub CI: runtime, tick progress, non-root mounts, network/capability isolation, no external decoy route and replay",
   "native_vcan": "not verified; portable CAN tests passed",
   "hardware": "not connected or claimed",
   "version": "0.1.0.dev6",
@@ -25,5 +25,7 @@
     "known_vulnerabilities": 0,
     "point_in_time": true
   },
-  "captioned_video_duration_seconds": 181.96
+  "captioned_video_duration_seconds": 181.96,
+  "ci_run_url": "https://github.com/andreicup/MirageTransit/actions/runs/37242166020",
+  "verified_source_commit": "50615de2a7e2bf5d5a7b68551737f1613a253952"
 }

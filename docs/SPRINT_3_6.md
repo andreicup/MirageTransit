@@ -100,8 +100,14 @@ development-only dependency. No network is required by the running pages.
 RPC latency, tick rate, DB+WAL growth, six applied commands and twenty equal replay checks.
 Numbers are observed on this container, not a server/hardware guarantee.
 
-Outstanding release gates: execute the Compose build/runtime/negative network checks on a
-Docker-enabled host and validate native vCAN in a network namespace. A captioned 182-second
-walkthrough was recorded from the real lab; the recorder script is committed. `v0.1.0` is not tagged until the applicable gates
-are verified. S7–S11 remain separate extensions (SSH, adaptive policy, railway, optional AI,
-bench hardware); no runtime claim is made for those stages.
+Docker build/runtime and negative reachability were verified in
+[CI run 37242166020](https://github.com/andreicup/MirageTransit/actions/runs/37242166020): all services
+healthy, loopback access, tick progress, non-root mounts, decoy/analyst separation, no external
+default route from the decoy, relay-to-analyst bypass denied, and export replay all pass.
+The code was integrated through [PR #3](https://github.com/andreicup/MirageTransit/pull/3).
+A captioned 182-second real-browser walkthrough was recorded; its recorder is committed.
+
+Native vCAN in a dedicated namespace and physical hardware are still unverified. The portable
+CAN path is verified. A final release tag has not been created. S7–S11 remain separate
+extensions (SSH, adaptive policy, railway, optional AI, bench hardware); no runtime claim is
+made for those stages.

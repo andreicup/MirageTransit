@@ -1,11 +1,12 @@
 # Implementation roadmap
 
 ## Workflow
-S0–S2 are complete. S3–S5 local implementations and S6 packaging/demo tooling are implemented;
-see [verification and remaining release gates](SPRINT_3_6.md). Docker runtime and native vCAN remain explicit verification/release gates. A three-minute
-captioned browser walkthrough has been recorded from the real ephemeral lab.
-No `v0.1.0` release is claimed yet. S7–S11 remain extensions. Each implementation ends with
-tested code, updated run instructions and a reviewable commit/PR.
+S0–S6 local implementation and runtime acceptance are complete; see
+[verification and remaining release gates](SPRINT_3_6.md). Core/package checks, 79 tests,
+desktop/mobile browser acceptance and Docker runtime/isolation all pass in CI.
+A three-minute captioned browser walkthrough has been recorded. Version is `0.1.0.dev6`;
+no final release tag is claimed. Native vCAN and physical hardware remain separate verification
+work. S7–S11 remain extensions.
 
 | Stage | Focus | Estimate | Depends on |
 | --- | --- | --- | --- |
@@ -68,8 +69,8 @@ S11: bench-only ESP32/CAN integration and optional OBiCAN import, validated sepa
 ## Stop/reduce criteria
 If runtime exceeds target, measure before adding services. If replay diverges, freeze new features and repair ordering/units. If isolation checks fail, keep localhost-only and block deployment. If cross-surface behavior is contradictory, prioritize projection/version handling over visual polish.
 
-## Next verification task
-Execute the local Compose deployment on a Docker-enabled Linux host, verify negative
-reachability from decoy to analyst, capture the portfolio video.
-Native vCAN verification remains a separate optional transport gate. The local four-process
-lab, portable CAN and offline replay work without those external runtime capabilities.
+## Next implementation task
+S7: restricted SSH emulator, synthetic filesystem and additional run-specific breadcrumbs,
+without arbitrary shell execution. Then S8–S10 remain software extensions. Native vCAN and S11
+hardware require separate bench/runtime verification; the core portable lab already runs
+without hardware.

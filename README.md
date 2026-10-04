@@ -12,10 +12,13 @@ Python · SQLite · HTTP/MQTT · Synthetic CAN · Verified replay
 
 MirageTransit is a transport security research lab where a simulated fleet, decoy web portal, MQTT surface and virtual vehicle signals share one authoritative state. Suspicious interactions become observable simulation events and reproducible regression scenarios.
 
-**Status:** deterministic core, durable SQLite/replay, coherent HTTP/MQTT lab services,
-portable CAN and the private analyst console are implemented. Local multi-process tests and
-packaged-wheel checks are available. Compose runtime and native vCAN validation remain release gates; no final release tag is claimed.
-See [S3–S6 results and limitations](docs/SPRINT_3_6.md), [acceptance results](benchmarks/acceptance.json) and [demo walkthrough](docs/DEMO.md).
+**Status:** S0–S6 local lab implemented and verified: deterministic fleet, durable replay,
+coherent HTTP/MQTT/CAN, private analyst console and contained Docker deployment. All 79 tests,
+desktop/mobile browser checks and Docker runtime/isolation checks pass in
+[CI](https://github.com/andreicup/MirageTransit/actions/runs/37242166020). A three-minute real-browser
+demo is recorded. Native vCAN/hardware verification and S7–S11 extensions remain separate;
+version is `0.1.0.dev6`, without a final release tag.
+See [S3–S6 results](docs/SPRINT_3_6.md), [acceptance](benchmarks/acceptance.json) and [demo](docs/DEMO.md).
 
 ## First release
 

@@ -24,12 +24,17 @@ Start with the README quick start. Run the committed replay scenario, then captu
 
 ## Verification checkpoint
 
-Portfolio presentation audited on **5 October 2026 (Europe/Bucharest)** against source commit [`9b3b22c`](https://github.com/andreicup/MirageTransit/commit/9b3b22c65647dd9665d67cd79d58f7ae34cd0454).
+Implementation verified on **5 October 2026 (Europe/Bucharest)** against source commit
+[`50615de`](https://github.com/andreicup/MirageTransit/commit/50615de2a7e2bf5d5a7b68551737f1613a253952)
+and integrated through [PR #3](https://github.com/andreicup/MirageTransit/pull/3).
 
-Latest observed successful source [CI run](https://github.com/andreicup/MirageTransit/actions/runs/37128169776): `9b3b22c`. This is a dated checkpoint; the [Actions page](https://github.com/andreicup/MirageTransit/actions) is the authority for later changes.
+[CI run 37242166020](https://github.com/andreicup/MirageTransit/actions/runs/37242166020) passes
+core/package checks, 79 tests, desktop/mobile browser acceptance and Docker runtime/isolation.
+This is a dated checkpoint; [Actions](https://github.com/andreicup/MirageTransit/actions) remains
+the authority for later changes.
 
 ## Remaining acceptance gates
 
-HTTP/MQTT, portable CAN, analyst console and local deployment tooling are implemented. Docker runtime validation is tracked in CI; native vCAN and physical hardware remain separate gates. S7–S11 remain extensions. See [S3–S6](SPRINT_3_6.md) and [acceptance](../benchmarks/acceptance.json).
+HTTP/MQTT, portable CAN, analyst console and local deployment tooling are implemented. Docker runtime and isolation are verified in CI; native vCAN and physical hardware remain separate gates. S7–S11 remain extensions. See [S3–S6](SPRINT_3_6.md) and [acceptance](../benchmarks/acceptance.json).
 
 See [the detailed verification record](../docs/SPRINT_2.md) for test methods and limits. A passed build or synthetic fixture does not close physical or model-quality gates.
