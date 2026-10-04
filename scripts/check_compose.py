@@ -41,7 +41,7 @@ for endpoint in ('analyst', 'ingress'):
     except OSError: pass
     else: raise AssertionError('decoy can reach private analyst ingress')
 with open('/proc/net/route') as routes:
-    assert all(line.split()[1] != '00000000' for line in list(routes)[1:]), 'external default route' 
+    assert all(line.split()[1] != '00000000' for line in list(routes)[1:])
 """,
 )
 container(
