@@ -77,6 +77,12 @@ def parser() -> argparse.ArgumentParser:
     importer.add_argument("--input", type=Path, required=True)
     replay = commands.add_parser("replay")
     replay.add_argument("--input", type=Path, required=True)
+    for name in ("lab-init", "lab"):
+        command = commands.add_parser(name, help="initialize or start the isolated local lab")
+        command.add_argument("--directory", type=Path, default=Path("runs/lab"))
+        if name == "lab-init":
+            command.add_argument("--run", default="local-lab")
+            command.add_argument("--base-port", type=int, default=8760)
     return root
 
 
@@ -156,6 +162,15 @@ def execute_journal(args: argparse.Namespace) -> dict[str, Any]:
 
 
 def execute(args: argparse.Namespace) -> dict[str, Any]:
+    if args.action == "lab-init":
+        from miragetransit.service import initialize
+
+        return initialize(args.directory, args.run, args.base_port)
+    if args.action == "lab":
+        from miragetransit.service import supervise
+
+        supervise(args.directory)
+        return {"status": "stopped"}
     if args.action.startswith("run-") or args.action in ("replay", "journal-demo"):
         return execute_journal(args)
     if args.action == "demo":

@@ -1,0 +1,63 @@
+name: miragetransit
+x-service: &service
+  build: .
+  user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+  restart: "no"
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 96
+  mem_limit: 192m
+  cpus: 0.75
+  tmpfs: [/tmp:size=32m,mode=1777]
+  healthcheck:
+    test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:'+os.environ['HEALTH_PORT']+'/healthz',timeout=2)"]
+    interval: 10s
+    timeout: 3s
+    retries: 3
+  logging:
+    driver: json-file
+    options: {max-size: 5m, max-file: "2"}
+services:
+  core:
+    <<: *service
+    command: [--role, core, --config, /config/core.json, --host, 0.0.0.0]
+    environment: {HEALTH_PORT: "8760"}
+    volumes:
+      - ./runs/container/core.json:/config/core.json:ro
+      - ./runs/container/data:/data
+    networks: [decoy_control, analyst_control]
+  portal:
+    <<: *service
+    command: [--role, decoy, --config, /config/decoy.json, --host, 0.0.0.0]
+    environment: {HEALTH_PORT: "8761"}
+    volumes: [./runs/container/decoy.json:/config/decoy.json:ro]
+    ports: [127.0.0.1:8761:8761]
+    networks: [decoy_control]
+    depends_on:
+      core: {condition: service_healthy}
+  mqtt:
+    <<: *service
+    command: [--role, mqtt, --config, /config/mqtt.json, --host, 0.0.0.0]
+    volumes: [./runs/container/mqtt.json:/config/mqtt.json:ro]
+    ports: [127.0.0.1:8763:8763]
+    networks: [decoy_control]
+    healthcheck:
+      test: [CMD, python, -c, "import socket; s=socket.create_connection(('127.0.0.1',8763),2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    depends_on:
+      core: {condition: service_healthy}
+  analyst:
+    <<: *service
+    command: [--role, analyst, --config, /config/analyst.json, --host, 0.0.0.0]
+    environment: {HEALTH_PORT: "8762"}
+    volumes: [./runs/container/analyst.json:/config/analyst.json:ro]
+    ports: [127.0.0.1:8762:8762]
+    networks: [analyst_control]
+    depends_on:
+      core: {condition: service_healthy}
+networks:
+  decoy_control: {internal: true}
+  analyst_control: {internal: true}

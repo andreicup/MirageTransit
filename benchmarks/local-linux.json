@@ -1,0 +1,27 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "system": "Linux",
+    "machine": "x86_64",
+    "logical_cpus": 9
+  },
+  "measurement": "Linux container: three vehicles, four services and supervisor. RSS sum includes shared pages; not a hardware performance promise.",
+  "duration_seconds": 10.003,
+  "process_count": 5,
+  "cpu_percent_one_core": 6.5,
+  "peak_rss_sum_mib": 106.32,
+  "sqlite_including_wal_bytes": 3613056,
+  "rpc_latency_ms_mean": 2.812,
+  "rpc_latency_ms_p95": 4.81,
+  "observed_tick_advance": 100,
+  "observed_tick_rate_hz": 9.997,
+  "commands_applied": 6,
+  "expected_commands": 6,
+  "twenty_replays_equal": true,
+  "trace_sha256": "bdb65a00a5d1b816d96927676f35019a1b008c94214e620a18fffbdbd30b2db8",
+  "tick_deadline_lateness_ms_max": 9.968,
+  "tick_deadline_lateness_ms_mean": 4.791,
+  "tick_deadline_lateness_ms_p95": 9.442,
+  "ticks_measured": 101,
+  "healthy_after_stop": true
+}

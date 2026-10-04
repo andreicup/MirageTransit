@@ -3,3 +3,8 @@ include .python-version
 recursive-include docs *.md
 recursive-include scripts *.py
 recursive-include scenarios *.json
+include Dockerfile compose.yaml package.json package-lock.json
+recursive-include scripts *.cjs
+recursive-include deploy *.py
+recursive-include schemas *.dbc
+recursive-include benchmarks *.json

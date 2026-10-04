@@ -22,7 +22,13 @@ Transport acknowledgments are distinct from command acceptance and state applica
 
 Live command placement: validate, assign run sequence, schedule at the next tick, persist acceptance and scheduled tick, then apply. Replay supplies recorded tick and sequence directly, bypassing live arrival times.
 
-## Initial stack (design choices)
+## Current implemented stack
+
+See [ADR 003](adr-003-lightweight-services.md) for the standard-library local service stack,
+MQTT subset and static analyst interface. The original stack proposal below is retained as
+planning context; it is not the current dependency list.
+
+## Initial stack proposal
 | Area | Choice | Reason |
 | --- | --- | --- |
 | Simulation/contracts | Python 3.12, typed models, integer/fixed-point state | Fast iteration and deterministic core |

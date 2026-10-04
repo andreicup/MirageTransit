@@ -1,0 +1,44 @@
+VERSION "MirageTransit synthetic CAN v1"
+NS_ :
+BS_:
+BU_: Coordinator Lab
+
+BO_ 256 MT001_Telemetry: 8 Coordinator
+ SG_ Speed_mm_s : 0|16@1+ (1,0) [0|45000] "mm/s" Lab
+ SG_ Throttle_permille : 16|16@1+ (1,0) [0|1000] "permille" Lab
+ SG_ Brake_permille : 32|16@1+ (1,0) [0|1000] "permille" Lab
+ SG_ Ignition : 48|8@1+ (1,0) [0|1] "" Lab
+ SG_ Fuel_ml : 56|8@1+ (400,0) [0|102000] "ml" Lab
+
+BO_ 512 MT001_Command: 8 Lab
+ SG_ Operation : 0|8@1+ (1,0) [0|2] "" Coordinator
+ SG_ Value : 8|16@1+ (1,0) [0|1000] "" Coordinator
+ SG_ Nonce : 24|32@1+ (1,0) [1|4294967295] "" Coordinator
+ SG_ Reserved : 56|8@1+ (1,0) [0|0] "" Coordinator
+
+BO_ 257 MT002_Telemetry: 8 Coordinator
+ SG_ Speed_mm_s : 0|16@1+ (1,0) [0|45000] "mm/s" Lab
+ SG_ Throttle_permille : 16|16@1+ (1,0) [0|1000] "permille" Lab
+ SG_ Brake_permille : 32|16@1+ (1,0) [0|1000] "permille" Lab
+ SG_ Ignition : 48|8@1+ (1,0) [0|1] "" Lab
+ SG_ Fuel_ml : 56|8@1+ (400,0) [0|102000] "ml" Lab
+
+BO_ 513 MT002_Command: 8 Lab
+ SG_ Operation : 0|8@1+ (1,0) [0|2] "" Coordinator
+ SG_ Value : 8|16@1+ (1,0) [0|1000] "" Coordinator
+ SG_ Nonce : 24|32@1+ (1,0) [1|4294967295] "" Coordinator
+ SG_ Reserved : 56|8@1+ (1,0) [0|0] "" Coordinator
+
+BO_ 258 MT003_Telemetry: 8 Coordinator
+ SG_ Speed_mm_s : 0|16@1+ (1,0) [0|45000] "mm/s" Lab
+ SG_ Throttle_permille : 16|16@1+ (1,0) [0|1000] "permille" Lab
+ SG_ Brake_permille : 32|16@1+ (1,0) [0|1000] "permille" Lab
+ SG_ Ignition : 48|8@1+ (1,0) [0|1] "" Lab
+ SG_ Fuel_ml : 56|8@1+ (400,0) [0|102000] "ml" Lab
+
+BO_ 514 MT003_Command: 8 Lab
+ SG_ Operation : 0|8@1+ (1,0) [0|2] "" Coordinator
+ SG_ Value : 8|16@1+ (1,0) [0|1000] "" Coordinator
+ SG_ Nonce : 24|32@1+ (1,0) [1|4294967295] "" Coordinator
+ SG_ Reserved : 56|8@1+ (1,0) [0|0] "" Coordinator
+
