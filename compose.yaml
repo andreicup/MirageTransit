@@ -9,7 +9,7 @@ x-service: &service
   pids_limit: 96
   mem_limit: 192m
   cpus: 0.75
-  tmpfs: [/tmp:size=32m,mode=1777]
+  tmpfs: ["/tmp:size=32m,mode=1777"]
   healthcheck:
     test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:'+os.environ['HEALTH_PORT']+'/healthz',timeout=2)"]
     interval: 10s

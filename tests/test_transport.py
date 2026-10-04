@@ -98,6 +98,34 @@ class TransportTests(unittest.TestCase):
         ]
         self.assertEqual(graph(events)["edges"], [])
 
+    def test_failed_coordinator_does_not_accept_unapplied_commands(self):
+        from miragetransit.rpc import Coordinator
+        from miragetransit.storage import StoragePaused
+
+        with tempfile.TemporaryDirectory() as directory:
+            with Store(Path(directory) / "lab.sqlite") as store:
+                store.create("test", load_profile())
+                owner = Coordinator(store, "test", "decoy", "analyst")
+                owner.failure = "work budget reached"
+                with self.assertRaises(StoragePaused):
+                    owner.dispatch(
+                        "decoy",
+                        {
+                            "operation": "command",
+                            "adapter": "mqtt",
+                            "session": "s-one",
+                            "body": {
+                                "command_id": "after-failure",
+                                "vehicle_id": "MT-001",
+                                "operation": "set_throttle",
+                                "value": 1000,
+                            },
+                        },
+                    )
+                self.assertEqual(
+                    store.connection.execute("SELECT COUNT(*) FROM actions").fetchone()[0], 0
+                )
+
     def test_configuration_role_separation_and_no_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)

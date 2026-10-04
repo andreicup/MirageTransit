@@ -77,7 +77,7 @@ is not globally quota-managed. The base image patch and multi-platform manifest 
 
 ## Verification and remaining gates
 
-Local checks: 76 domain/CLI/protocol/transport tests pass; Ruff, strict mypy, lock fingerprint,
+Local checks: 77 domain/CLI/protocol/transport tests pass; Ruff, strict mypy, lock fingerprint,
 clean installed wheel with live services, and desktop/mobile browser acceptance pass.
 See [machine-readable acceptance results](../benchmarks/acceptance.json).
 

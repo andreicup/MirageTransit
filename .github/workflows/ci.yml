@@ -75,6 +75,9 @@ jobs:
         run: LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose up --build --wait --wait-timeout 120
       - name: Verify runtime and negative reachability
         run: LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) uv run --locked python scripts/check_compose.py
+      - name: Service logs on failure
+        if: failure()
+        run: docker compose logs --no-color
       - name: Cleanup
         if: always()
         run: docker compose down

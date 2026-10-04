@@ -9,7 +9,7 @@ A transport security research lab built around one deterministic fleet state and
 **0.1.0.dev6 · integrated transport deception lab**  
 **Stack:** Python · SQLite · HTTP/MQTT · Synthetic CAN · Verified replay
 
-Local acceptance records 76 tests, desktop/mobile browser checks and twenty equal replay checks. Ruff, strict typing, lock provenance, packaging and installed-wheel live startup checks pass. HTTP/MQTT/CAN projections share the core state; the private console correlates planted credential reuse.
+Local acceptance records 77 tests, desktop/mobile browser checks and twenty equal replay checks. Ruff, strict typing, lock provenance, packaging and installed-wheel live startup checks pass. HTTP/MQTT/CAN projections share the core state; the private console correlates planted credential reuse.
 
 ## Inspect the engineering
 

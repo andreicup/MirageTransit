@@ -152,6 +152,8 @@ class Coordinator:
             ]
             return result
         if operation == "command":
+            if self.failure is not None or self.store.paused:
+                raise StoragePaused("coordinator unavailable; commands cannot be applied")
             adapter = request.get("adapter")
             if adapter not in ("http", "mqtt", "can", "analyst"):
                 raise ValueError("unknown adapter")
