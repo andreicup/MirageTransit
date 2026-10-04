@@ -14,7 +14,7 @@
 - S5: private login with 15-minute sessions, HTTP-only/SameSite cookies, per-session CSRF,
   bounded login attempts, overview/vehicle control, cursor-based timeline and reconnecting SSE,
   cross-protocol credential-reuse graph, sanitized scenario download and per-tick replay.
-- S6: supervisor quick start, clean installed wheel, four-container local Compose definition,
+- S6: supervisor quick start, clean installed wheel, five-container local Compose definition,
   role config generator, quotas/health checks, scripted demonstration, Linux measurements and
   browser checks. Release gates below are tracked separately from implementation.
 
@@ -57,6 +57,8 @@ from this execution environment.
 
 ## Docker host workflow
 
+Use a recent Docker Compose version supporting per-network `gw_priority`.
+
 For a rootless Linux user, set `LOCAL_UID=$(id -u)` and `LOCAL_GID=$(id -g)` as shell variables,
 export them, then run:
 
@@ -68,7 +70,11 @@ docker compose up --build --wait
 UID/GID must be nonzero. When preparing as root, the default owner is 1000:1000. Only core mounts
 `runs/container/data`; each adapter sees only its role configuration. Core has no published
 port. Portal and MQTT share an internal decoy network, while analyst uses a separate internal
-network. All host bindings are 127.0.0.1. No host networking or privileged application container.
+network. All host bindings are 127.0.0.1. A separate fixed-target TCP ingress relay publishes those ports
+on its own access bridge; its listeners bind only that bridge address. Core and adapters stay
+on internal networks without external routes. The relay has no credentials or database mounts,
+and cannot choose targets from request data. Decoy-to-relay analyst access is tested as denied.
+No host networking or privileged application container.
 
 Cleanup: `docker compose down` removes containers/networks and preserves the experiment database.
 After exporting evidence, delete only the intended stopped experiment directory if you want
@@ -77,7 +83,7 @@ is not globally quota-managed. The base image patch and multi-platform manifest 
 
 ## Verification and remaining gates
 
-Local checks: 77 domain/CLI/protocol/transport tests pass; Ruff, strict mypy, lock fingerprint,
+Local checks: 79 domain/CLI/protocol/transport tests pass; Ruff, strict mypy, lock fingerprint,
 clean installed wheel with live services, and desktop/mobile browser acceptance pass.
 See [machine-readable acceptance results](../benchmarks/acceptance.json).
 

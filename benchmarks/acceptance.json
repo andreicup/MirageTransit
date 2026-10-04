@@ -1,7 +1,7 @@
 {
   "python": "3.12.14",
   "domain_cli_protocol_transport_tests": {
-    "passed": 77,
+    "passed": 79,
     "failed": 0
   },
   "ruff": "passed",

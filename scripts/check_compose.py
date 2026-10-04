@@ -36,9 +36,12 @@ for operation in ('events','evidence','export','stop'):
     try: client.call(operation)
     except ValueError as error: assert 'capability denied' in str(error)
     else: raise AssertionError('analyst capability leaked')
-try: socket.create_connection(('analyst',8762),timeout=2)
-except OSError: pass
-else: raise AssertionError('decoy can reach analyst network')
+for endpoint in ('analyst', 'ingress'):
+    try: socket.create_connection((endpoint,8762),timeout=2)
+    except OSError: pass
+    else: raise AssertionError('decoy can reach private analyst ingress')
+with open('/proc/net/route') as routes:
+    assert all(line.split()[1] != '00000000' for line in list(routes)[1:]), 'external default route' 
 """,
 )
 container(
@@ -78,4 +81,9 @@ for service in resolved["services"].values():
     for port in service.get("ports", []):
         assert port["host_ip"] == "127.0.0.1"
 assert not resolved["services"]["core"].get("ports")
+assert set(resolved["services"]["core"]["networks"]) == {"decoy_control", "analyst_control"}
+assert resolved["networks"]["decoy_control"]["internal"]
+assert resolved["networks"]["analyst_control"]["internal"]
+for role in ("portal", "mqtt", "analyst"):
+    assert not resolved["services"][role].get("ports")
 print("PASS: Compose runtime, tick progress, non-root mounts, network/capability isolation, replay")

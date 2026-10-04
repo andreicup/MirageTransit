@@ -31,3 +31,9 @@ sandbox. The Compose topology adds filesystem/network separation. It is configur
 only and must be exercised on a Docker host before claiming container reachability validation.
 Future public honeypot work should use a reviewed production broker/HTTP ingress and containment
 validation. The local lab remains fully usable with the current stack.
+
+The contained Docker topology uses an additional fixed-target TCP ingress relay. Only the relay
+joins the host-accessible bridge, with listeners restricted to that bridge IP; all application
+services keep internal-only networks. This preserves published loopback access without giving
+the decoy a default external route or a listener that bypasses analyst network separation.
+Reference: https://docs.docker.com/compose/how-tos/networking/ .

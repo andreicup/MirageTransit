@@ -32,7 +32,6 @@ services:
     command: [--role, decoy, --config, /config/decoy.json, --host, 0.0.0.0]
     environment: {HEALTH_PORT: "8761"}
     volumes: [./runs/container/decoy.json:/config/decoy.json:ro]
-    ports: [127.0.0.1:8761:8761]
     networks: [decoy_control]
     depends_on:
       core: {condition: service_healthy}
@@ -40,7 +39,6 @@ services:
     <<: *service
     command: [--role, mqtt, --config, /config/mqtt.json, --host, 0.0.0.0]
     volumes: [./runs/container/mqtt.json:/config/mqtt.json:ro]
-    ports: [127.0.0.1:8763:8763]
     networks: [decoy_control]
     healthcheck:
       test: [CMD, python, -c, "import socket; s=socket.create_connection(('127.0.0.1',8763),2); s.close()"]
@@ -54,10 +52,29 @@ services:
     command: [--role, analyst, --config, /config/analyst.json, --host, 0.0.0.0]
     environment: {HEALTH_PORT: "8762"}
     volumes: [./runs/container/analyst.json:/config/analyst.json:ro]
-    ports: [127.0.0.1:8762:8762]
     networks: [analyst_control]
     depends_on:
       core: {condition: service_healthy}
+  ingress:
+    <<: *service
+    entrypoint: [python, -m, miragetransit.ingress]
+    ports: [127.0.0.1:8761:8761, 127.0.0.1:8762:8762, 127.0.0.1:8763:8763]
+    networks:
+      ingress_access:
+        aliases: [local-ingress]
+        gw_priority: 1
+      decoy_control: {}
+      analyst_control: {}
+    healthcheck:
+      test: [CMD, python, -c, "import socket; s=socket.create_connection(('local-ingress',8761),2); s.close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    depends_on:
+      portal: {condition: service_healthy}
+      analyst: {condition: service_healthy}
+      mqtt: {condition: service_healthy}
 networks:
   decoy_control: {internal: true}
   analyst_control: {internal: true}
+  ingress_access: {}
