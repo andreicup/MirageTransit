@@ -1,4 +1,11 @@
+![MirageTransit — One fleet. One truth. Reproducible traces.](docs/assets/banner.svg)
+
 # MirageTransit
+
+**0.1.0.dev2 · deterministic core and replay delivered**  
+Python · SQLite · uv · Typed contracts
+
+[Reviewer guide](docs/PORTFOLIO.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/SPRINT_2.md) · [CI](https://github.com/zCooperHD/MirageTransit/actions)
 
 **Cyber-Physical Deception Platform for Transportation Systems**
 
@@ -6,7 +13,7 @@ MirageTransit is a transport security research lab where a simulated fleet, deco
 
 **Status:** Sprints 1–2 implemented: deterministic fleet core, local CLI, SQLite events and verified scenario replay. HTTP/MQTT decoys, analyst console, CAN adapters and deployment are planned in later sprints. See [Sprint 1](docs/SPRINT_1.md) and [Sprint 2 results and limitations](docs/SPRINT_2.md).
 
-## First release
+## Planned first release
 
 A synthetic three-vehicle fleet; bounded vehicle dynamics; decoy HTTP and MQTT interfaces; correlated event timeline; canary breadcrumbs; deterministic scenario replay; private analyst console; local Docker deployment. Everything runs without purchasing hardware.
 

@@ -22,7 +22,7 @@ Transport acknowledgments are distinct from command acceptance and state applica
 
 Live command placement: validate, assign run sequence, schedule at the next tick, persist acceptance and scheduled tick, then apply. Replay supplies recorded tick and sequence directly, bypassing live arrival times.
 
-## Initial stack (design choices)
+## Implemented core and proposed adapter stack
 | Area | Choice | Reason |
 | --- | --- | --- |
 | Simulation/contracts | Python 3.12, typed models, integer/fixed-point state | Fast iteration and deterministic core |
@@ -31,10 +31,11 @@ Live command placement: validate, assign run sequence, schedule at the next tick
 | Messaging | Mosquitto plus Python MQTT adapter | Real MQTT protocol surface |
 | CAN | Optional python-can SocketCAN/vCAN | Linux transport integration |
 | Console | React, TypeScript, Vite | Interactive inspection and timeline |
-| Tests | pytest; browser tests for analyst access and demo | Domain and integration evidence |
+| Core tests | unittest, Ruff and strict mypy | Implemented domain, CLI, storage and replay checks |
+| Future adapter/UI tests | Browser and protocol fixtures | Planned analyst/decoy integration evidence |
 | Packaging | Docker Compose | Reproducible homelab topology |
 
-These are proposed dependencies, not installed or version-locked. Resolve exact versions, lockfiles, advisories and image digests in S1. No C++ until profiling justifies it; no Kubernetes, Redis or external database for this scale.
+The Python simulation, SQLite persistence and replay are implemented in Sprints 1–2 with no third-party runtime dependencies. Development/build tooling is pinned in `uv.lock`; CI verifies its fingerprint. FastAPI, MQTT, CAN, React and Docker in this table remain proposed later-sprint dependencies and are not installed by the current core. No C++ until profiling justifies it; no Kubernetes, Redis or external database for this scale.
 
 ## Logical boundaries and process split
 Core: simulation, command policy, event writer, profile loader, replay engine.
