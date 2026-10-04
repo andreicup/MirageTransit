@@ -28,7 +28,7 @@ See [ADR 003](adr-003-lightweight-services.md) for the standard-library local se
 MQTT subset and static analyst interface. The original stack proposal below is retained as
 planning context; it is not the current dependency list.
 
-## Initial stack proposal
+## Initial stack proposal (proposals, not installed dependencies)
 | Area | Choice | Reason |
 | --- | --- | --- |
 | Simulation/contracts | Python 3.12, typed models, integer/fixed-point state | Fast iteration and deterministic core |
@@ -37,10 +37,11 @@ planning context; it is not the current dependency list.
 | Messaging | Mosquitto plus Python MQTT adapter | Real MQTT protocol surface |
 | CAN | Optional python-can SocketCAN/vCAN | Linux transport integration |
 | Console | React, TypeScript, Vite | Interactive inspection and timeline |
-| Tests | pytest; browser tests for analyst access and demo | Domain and integration evidence |
+| Core tests | unittest, Ruff and strict mypy | Implemented domain, CLI, storage and replay checks |
+| Adapter/UI tests | Browser and protocol fixtures | Implemented analyst/decoy integration evidence |
 | Packaging | Docker Compose | Reproducible homelab topology |
 
-These are proposed dependencies, not installed or version-locked. Resolve exact versions, lockfiles, advisories and image digests in S1. No C++ until profiling justifies it; no Kubernetes, Redis or external database for this scale.
+The original framework/broker proposal is superseded by ADR 003. The implemented Python simulation, SQLite, HTTP/MQTT services and replay have no third-party runtime dependencies. Development/build tooling is pinned in `uv.lock` and browser tooling in `package-lock.json`; the Compose image digest is pinned. No C++ until profiling justifies it; no Kubernetes, Redis or external database for this scale.
 
 ## Logical boundaries and process split
 Core: simulation, command policy, event writer, profile loader, replay engine.

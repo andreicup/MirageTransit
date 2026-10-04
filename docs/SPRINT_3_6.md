@@ -95,7 +95,7 @@ RPC latency, tick rate, DB+WAL growth, six applied commands and twenty equal rep
 Numbers are observed on this container, not a server/hardware guarantee.
 
 Outstanding release gates: execute the Compose build/runtime/negative network checks on a
-Docker-enabled host, validate native vCAN in a network namespace, and
-capture/publish the narrated portfolio video. `v0.1.0` is not tagged until the applicable gates
+Docker-enabled host and validate native vCAN in a network namespace. A captioned 182-second
+walkthrough was recorded from the real lab; the recorder script is committed. `v0.1.0` is not tagged until the applicable gates
 are verified. S7–S11 remain separate extensions (SSH, adaptive policy, railway, optional AI,
 bench hardware); no runtime claim is made for those stages.

@@ -1,12 +1,29 @@
 {
   "python": "3.12.14",
-  "domain_cli_protocol_transport_tests": {"passed": 76, "failed": 0},
+  "domain_cli_protocol_transport_tests": {
+    "passed": 76,
+    "failed": 0
+  },
   "ruff": "passed",
   "mypy_strict": "passed",
   "dependency_lock_fingerprint": "passed",
-  "browser": {"desktop_width": 1440, "mobile_width": 390, "horizontal_overflow": false, "page_errors": 0, "login_control_export_replay_logout": "passed"},
+  "browser": {
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "horizontal_overflow": false,
+    "page_errors": 0,
+    "login_control_export_replay_logout": "passed",
+    "playwright": "1.55.1",
+    "reconnect_beyond_first_100_events": "passed"
+  },
   "installed_wheel": "passed: golden trace, SQLite replay/import, live four-process startup and web resources",
   "compose_runtime": "CI check added; local Docker runtime unavailable",
   "native_vcan": "not verified; portable CAN tests passed",
-  "hardware": "not connected or claimed"
+  "hardware": "not connected or claimed",
+  "version": "0.1.0.dev6",
+  "npm_audit": {
+    "known_vulnerabilities": 0,
+    "point_in_time": true
+  },
+  "captioned_video_duration_seconds": 181.96
 }

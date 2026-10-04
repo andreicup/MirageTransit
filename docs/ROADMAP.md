@@ -2,8 +2,8 @@
 
 ## Workflow
 S0–S2 are complete. S3–S5 local implementations and S6 packaging/demo tooling are implemented;
-see [verification and remaining release gates](SPRINT_3_6.md). Docker runtime, native vCAN,
-the recorded portfolio video remain explicit verification/release gates.
+see [verification and remaining release gates](SPRINT_3_6.md). Docker runtime and native vCAN remain explicit verification/release gates. A three-minute
+captioned browser walkthrough has been recorded from the real ephemeral lab.
 No `v0.1.0` release is claimed yet. S7–S11 remain extensions. Each implementation ends with
 tested code, updated run instructions and a reviewable commit/PR.
 

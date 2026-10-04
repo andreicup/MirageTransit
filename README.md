@@ -1,4 +1,12 @@
+![MirageTransit — One fleet. One truth. Reproducible traces.](docs/assets/banner.svg)
+
 # MirageTransit
+
+**0.1.0.dev6 · integrated transport deception lab**
+
+Python · SQLite · HTTP/MQTT · Synthetic CAN · Verified replay
+
+[Reviewer guide](docs/PORTFOLIO.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/SPRINT_3_6.md) · [CI](https://github.com/andreicup/MirageTransit/actions)
 
 **Cyber-Physical Deception Platform for Transportation Systems**
 
@@ -6,7 +14,7 @@ MirageTransit is a transport security research lab where a simulated fleet, deco
 
 **Status:** deterministic core, durable SQLite/replay, coherent HTTP/MQTT lab services,
 portable CAN and the private analyst console are implemented. Local multi-process tests and
-packaged-wheel checks are available. Compose runtime and native vCAN validation, the recorded demo remain release gates; no final release tag is claimed.
+packaged-wheel checks are available. Compose runtime and native vCAN validation remain release gates; no final release tag is claimed.
 See [S3–S6 results and limitations](docs/SPRINT_3_6.md), [acceptance results](benchmarks/acceptance.json) and [demo walkthrough](docs/DEMO.md).
 
 ## First release
